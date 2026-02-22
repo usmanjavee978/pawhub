@@ -6,7 +6,7 @@ export const questionSchema = z.object({
     content: z.string().min(20, 'Please provide more details (at least 20 characters)'),
 })
 
-export type QuestionFormValues = z.infer<typeof questionSchema>
+export type QuestionFormValues = z.input<typeof questionSchema>
 
 export const commentSchema = z.object({
     content: z.string().min(2, 'Comment must be at least 2 characters'),

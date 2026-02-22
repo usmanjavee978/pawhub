@@ -16,4 +16,4 @@ export const petSchema = z.object({
     notes: z.string().max(1000).optional().nullable(),
 })
 
-export type PetFormValues = z.infer<typeof petSchema>
+export type PetFormValues = z.input<typeof petSchema>

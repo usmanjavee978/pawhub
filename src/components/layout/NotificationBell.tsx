@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 
-import { useNotifications, useMarkNotificationsRead } from '@/hooks/queries/use-notifications'
+import { useNotifications, useMarkNotificationsRead, type NotificationWithActor } from '@/hooks/queries/use-notifications'
 import { cn } from '@/lib/utils'
 
 export function NotificationBell({ userId }: { userId: string }) {
@@ -59,7 +59,7 @@ export function NotificationBell({ userId }: { userId: string }) {
                                 No new notifications.
                             </div>
                         ) : (
-                            notifications.map((n: any) => {
+                            notifications.map((n: NotificationWithActor) => {
                                 const actorName = n.actor?.display_name || n.actor?.username || 'Someone'
                                 let text = ''
                                 let linkUrl = ''

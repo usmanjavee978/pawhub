@@ -20,9 +20,11 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         .from('profiles')
         .select('*')
         .eq('username', username)
-        .single()
+        .maybeSingle()
 
     if (error || !profile) notFound()
+
+    const profileObj = profile as { id: string }
 
     await queryClient.prefetchQuery({
         queryKey: ['profile', username],
@@ -30,12 +32,12 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     })
 
     await queryClient.prefetchQuery({
-        queryKey: ['user-pets', profile.id],
+        queryKey: ['user-pets', profileObj.id],
         queryFn: async () => {
             const { data } = await supabase
                 .from('pets')
                 .select('*')
-                .eq('owner_id', profile.id)
+                .eq('owner_id', profileObj.id)
                 .eq('is_active', true)
                 .order('created_at', { ascending: true })
             return data ?? []
@@ -44,7 +46,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <ProfileClient profileId={profile.id} username={username} />
+            <ProfileClient profileId={profileObj.id} username={username} />
         </HydrationBoundary>
     )
 }
