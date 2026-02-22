@@ -20,11 +20,9 @@ export default async function NewFoodLogPage({ params }: { params: Promise<{ id:
         .select('id, name')
         .eq('id', petId)
         .eq('owner_id', user.id)
-        .single()
+        .maybeSingle()
 
-    if (pet) {
-        return <FoodNewClient petId={pet.id} petName={pet.name} userId={user.id} />
-    }
+    if (!pet) return notFound()
 
-    return notFound()
+    return <FoodNewClient petId={pet.id} petName={pet.name} userId={user.id} />
 }
