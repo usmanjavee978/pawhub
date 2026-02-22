@@ -23,6 +23,6 @@ export default async function NewFoodLogPage({ params }: { params: Promise<{ id:
         .single()
 
     if (!pet) notFound()
-
-    return <FoodNewClient petId={pet.id} petName={pet.name} userId={user.id} />
+    const safePet = pet!
+    return <FoodNewClient petId={safePet.id} petName={safePet.name} userId={user.id} />
 }
