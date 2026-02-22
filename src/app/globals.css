@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Design Tokens ──────────────────────────────────────────── */
+  --color-surface: oklch(98% 0.01 140);
+  --color-surface-raised: oklch(100% 0.02 140);
+  --color-surface-overlay: oklch(94% 0.02 140);
+
+  --color-bg-lush-from: oklch(96% 0.03 140);
+  --color-bg-lush-to: oklch(94% 0.04 40);
+
+  --color-foreground: oklch(15% 0.03 160);
+  --color-foreground-muted: oklch(45% 0.01 160);
+
+  --color-border-custom: oklch(85% 0.01 140);
+  --color-border-depth: oklch(75% 0.01 140);
+
+  --color-accent: oklch(65% 0.15 35);
+  --color-accent-depth: oklch(45% 0.15 35);
+  --color-accent-muted: oklch(92% 0.05 35);
+
+  --color-secondary: oklch(45% 0.1 160);
+  --color-secondary-depth: oklch(35% 0.1 160);
+
+  --spacing-depth: 4px;
+  --spacing-depth-sm: 2px;
+
+  --color-mood-idle: oklch(96% 0.02 140);
+  --color-mood-happy: oklch(94% 0.06 45);
+  --color-mood-hungry: oklch(94% 0.03 200);
+
+  --color-scrollbar-thumb: oklch(80% 0.01 140);
+}
+
+@layer base {
+  body {
+    background: radial-gradient(circle at 50% -20%,
+        var(--color-bg-lush-from),
+        var(--color-bg-lush-to));
+    min-height: 100vh;
+    color: var(--color-foreground);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-scrollbar-thumb);
+    border-radius: 9999px;
+  }
+}
+
+@layer components {
+  .block-card {
+    @apply rounded-3xl bg-surface-raised border-x border-t border-border-custom shadow-[0_var(--spacing-depth)_0_0_theme(colors.border-depth)] transition-all duration-300;
+  }
+
+  .block-card-hover {
+    @apply rounded-3xl bg-surface-raised border-x border-t border-border-custom transition-all duration-300 shadow-[0_var(--spacing-depth)_0_0_theme(colors.border-depth)] hover:-translate-y-0.5 hover:shadow-[0_6px_0_0_theme(colors.border-depth)];
+  }
+
+  .btn-game {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-bold text-white transition-all duration-75 active:translate-y-0.5 active:shadow-none;
+  }
+
+  .btn-game-primary {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-bold text-white transition-all duration-75 active:translate-y-0.5 active:shadow-none bg-accent shadow-[0_var(--spacing-depth)_0_0_theme(colors.accent-depth)] hover:opacity-90;
+  }
+
+  .btn-game-secondary {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-bold text-white transition-all duration-75 active:translate-y-0.5 active:shadow-none bg-secondary shadow-[0_var(--spacing-depth)_0_0_theme(colors.secondary-depth)] hover:opacity-90;
+  }
+
+  .btn-game-ghost {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-bold transition-all duration-75 active:translate-y-0.5 active:shadow-none bg-surface-overlay text-foreground-muted shadow-[0_var(--spacing-depth)_0_0_theme(colors.border-depth)] hover:text-foreground;
+  }
+
+  .input-block {
+    @apply w-full rounded-2xl border-x border-t border-border-custom bg-surface-overlay px-5 py-3.5 text-foreground placeholder:text-foreground-muted outline-none transition-all duration-150 focus:border-accent;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* ─── Atmospheric Background ─────────────────────────────────── */
+@property --bg-hue {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: conic-gradient(from var(--bg-hue) at 50% 50%,
+      oklch(90% 0.04 140 / 0.4),
+      oklch(92% 0.05 35 / 0.3),
+      oklch(94% 0.03 160 / 0.3),
+      oklch(90% 0.04 140 / 0.4));
+  filter: blur(100px);
+  animation: bg-rotate 60s linear infinite;
+}
+
+@keyframes bg-rotate {
+  to {
+    --bg-hue: 360deg;
+  }
+}
+
+/* ─── Micro-Interactions ─────────────────────────────────────── */
+.bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ─── Modern Typography ──────────────────────────────────────── */
+h1,
+h2,
+h3,
+.font-display {
+  @apply tracking-tight leading-tight;
+}
