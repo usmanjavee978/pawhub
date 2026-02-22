@@ -15,12 +15,14 @@ export default async function NewFoodLogPage({ params }: { params: Promise<{ id:
     const supabase = createServerClient()
 
     // Verify ownership
-    const { data: pet } = await supabase
+    const { data: pets } = await supabase
         .from('pets')
         .select('id, name')
         .eq('id', petId)
         .eq('owner_id', user.id)
-        .maybeSingle()
+        .limit(1)
+
+    const pet = pets?.[0]
 
     if (!pet) return notFound()
 
