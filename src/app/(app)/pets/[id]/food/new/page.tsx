@@ -15,16 +15,16 @@ export default async function NewFoodLogPage({ params }: { params: Promise<{ id:
     const supabase = createServerClient()
 
     // Verify ownership
-    const { data: pets } = await supabase
+    const { data: pet } = await supabase
         .from('pets')
         .select('id, name')
         .eq('id', petId)
         .eq('owner_id', user.id)
-        .limit(1)
-
-    const pet = pets?.[0]
+        .maybeSingle()
 
     if (!pet) return notFound()
 
-    return <FoodNewClient petId={pet.id} petName={pet.name} userId={user.id} />
+    // Explicit cast to resolve persistent 'never' narrowing issue on Vercel
+    const petObj = pet as { id: string; name: string }
+    return <FoodNewClient petId={petObj.id} petName={petObj.name} userId={user.id} />
 }
