@@ -54,7 +54,7 @@ export function BlogPostEditor({ initialData, isEditing }: BlogPostEditorProps) 
         defaultValues: {
             title: initialData?.title || '',
             excerpt: initialData?.excerpt || '',
-            category: (initialData?.category as BlogCategory) || 'general', // Type assertion mapped to form safely via enum
+            category: (initialData?.category as BlogCategory) || 'other', // Type assertion mapped to form safely via enum
             cover_image_url: initialData?.cover_image_url || '',
             content_text: initialData?.content_text || '',
         },

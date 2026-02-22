@@ -124,7 +124,7 @@ export function useToggleLike() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async ({ targetId, targetType, userId, isLiked }: { targetId: string, targetType: 'question' | 'comment', userId: string, isLiked: boolean }) => {
+        mutationFn: async ({ targetId, targetType, userId, isLiked }: { targetId: string, targetType: 'question' | 'comment' | 'blog_post', userId: string, isLiked: boolean }) => {
             if (isLiked) {
                 // Unlike
                 const { error } = await supabase.from('likes')
@@ -142,15 +142,17 @@ export function useToggleLike() {
             // Invalidate specific questions or comments
             if (variables.targetType === 'question') {
                 queryClient.invalidateQueries({ queryKey: ['questions'] })
-            } else {
+            } else if (variables.targetType === 'comment') {
                 queryClient.invalidateQueries({ queryKey: ['comments'] })
+            } else {
+                queryClient.invalidateQueries({ queryKey: ['blog_posts'] })
             }
         }
     })
 }
 
 // Hook to check if current user liked a target
-export function useIsLiked(targetId: string, targetType: 'question' | 'comment', userId?: string) {
+export function useIsLiked(targetId: string, targetType: 'question' | 'comment' | 'blog_post', userId?: string) {
     const supabase = createBrowserClient()
     return useQuery({
         queryKey: ['likes', targetId, userId],

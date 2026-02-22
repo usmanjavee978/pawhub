@@ -1,14 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { useEffect } from 'react'
-import type { Notification } from '@/types/database'
+import type { Notification, Profile } from '@/types/database'
+import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js'
+
+type NotificationActor = Pick<Profile, 'username' | 'display_name' | 'avatar_url'> | null
+export type NotificationWithActor = Notification & {
+    actor: NotificationActor
+}
 
 export function useNotifications(userId?: string) {
     const supabase = createBrowserClient()
     const queryClient = useQueryClient()
 
-    // 1. Fetch initial notifications
-    const query = useQuery({
+    const query = useQuery<NotificationWithActor[]>({
         queryKey: ['notifications', userId],
         queryFn: async () => {
             const { data, error } = await supabase
@@ -22,12 +27,11 @@ export function useNotifications(userId?: string) {
                 .limit(20)
 
             if (error) throw error
-            return data
+            return (data ?? []) as NotificationWithActor[]
         },
         enabled: !!userId,
     })
 
-    // 2. Subscribe to realtime updates
     useEffect(() => {
         if (!userId) return
 
@@ -41,25 +45,21 @@ export function useNotifications(userId?: string) {
                     table: 'notifications',
                     filter: `user_id=eq.${userId}`,
                 },
-                async (payload) => {
-                    // Fetch the actor details for the new notification since Realtime only sends raw row
+                async (payload: RealtimePostgresInsertPayload<Notification>) => {
                     const { data: actorRecord } = await supabase
                         .from('profiles')
                         .select('username, display_name, avatar_url')
                         .eq('id', payload.new.actor_id)
-                        .single()
+                        .maybeSingle()
 
-                    const newNotification = {
+                    const newNotification: NotificationWithActor = {
                         ...payload.new,
-                        actor: actorRecord
-                    } as any // Cast to our extended Notification type
+                        actor: actorRecord,
+                    }
 
-                    queryClient.setQueryData(
+                    queryClient.setQueryData<NotificationWithActor[]>(
                         ['notifications', userId],
-                        (old: any[] | undefined) => {
-                            if (!old) return [newNotification]
-                            return [newNotification, ...old]
-                        }
+                        (old = []) => [newNotification, ...old]
                     )
                 }
             )
@@ -88,12 +88,9 @@ export function useMarkNotificationsRead() {
             if (error) throw error
         },
         onSuccess: (_, userId) => {
-            queryClient.setQueryData(
+            queryClient.setQueryData<NotificationWithActor[]>(
                 ['notifications', userId],
-                (old: any[] | undefined) => {
-                    if (!old) return []
-                    return old.map(n => ({ ...n, is_read: true }))
-                }
+                (old = []) => old.map((n) => ({ ...n, is_read: true }))
             )
         }
     })

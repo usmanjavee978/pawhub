@@ -12,4 +12,4 @@ export const vaccineLogSchema = z.object({
     notes: z.string().max(500).optional().nullable(),
 })
 
-export type VaccineLogFormValues = z.infer<typeof vaccineLogSchema>
+export type VaccineLogFormValues = z.input<typeof vaccineLogSchema>
