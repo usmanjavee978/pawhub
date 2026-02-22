@@ -18,11 +18,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         }
     }
 
+    const post = data as any
+
     return {
-        title: `${data.title} - PawHub Blog`,
-        description: data.excerpt || 'Read this post on PawHub.',
+        title: `${post.title} - PawHub Blog`,
+        description: post.excerpt || 'Read this post on PawHub.',
         openGraph: {
-            images: data.cover_image_url ? [data.cover_image_url] : [],
+            images: post.cover_image_url ? [post.cover_image_url] : [],
         },
     }
 }

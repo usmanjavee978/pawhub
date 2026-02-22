@@ -39,6 +39,16 @@ export function isPast(dateStr: string | null | undefined): boolean {
   return new Date(dateStr) < new Date()
 }
 
+/** Generate a URL-safe slug from a title string */
+export function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
 /** Check if a date is within the next N days */
 export function isWithinDays(dateStr: string | null | undefined, days: number): boolean {
   if (!dateStr) return false

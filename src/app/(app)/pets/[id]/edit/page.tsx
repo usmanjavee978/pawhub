@@ -20,9 +20,10 @@ export default async function EditPetPage({ params }: { params: Promise<{ id: st
         .eq('id', petId)
         .single()
 
-    if (error || !pet || pet.owner_id !== user.id || !pet.is_active) {
+    const petData = pet as any
+    if (error || !pet || petData.owner_id !== user.id || !petData.is_active) {
         notFound()
     }
 
-    return <PetEditClient pet={pet} />
+    return <PetEditClient pet={petData} />
 }

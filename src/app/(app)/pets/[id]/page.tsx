@@ -23,7 +23,8 @@ export default async function PetDetailPage({ params }: { params: Promise<{ id: 
         .eq('id', petId)
         .single()
 
-    if (petError || !pet || pet.owner_id !== user.id || !pet.is_active) {
+    const petData = pet as any
+    if (petError || !pet || petData.owner_id !== user.id || !petData.is_active) {
         notFound()
     }
 

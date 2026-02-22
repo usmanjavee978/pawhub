@@ -17,7 +17,7 @@ const INPUT_IS_TOUCHED = 'isTouched' // Boolean
 // Replace '/rive/companion.riv' with your custom asset.
 const COMPANION_RIV_SRC = '/rive/companion.riv'
 
-interface CompanionCharacterProps {
+export interface CompanionCharacterProps {
   className?: string
   size?: number
   enableEyeTracking?: boolean

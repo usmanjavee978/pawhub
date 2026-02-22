@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, PlusCircle } from 'lucide-react'
 
 import { questionSchema, type QuestionFormValues } from '@/lib/validations/community'
 import { cn } from '@/lib/utils'

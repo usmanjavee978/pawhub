@@ -449,3 +449,7 @@ export type VaccineStatus = Database['public']['Enums']['vaccine_status']
 export type QuestionCategory = Database['public']['Enums']['question_category']
 export type LikeTargetType = Database['public']['Enums']['like_target_type']
 export type NotificationType = Database['public']['Enums']['notification_type']
+export type PetWithLogs = Pet & {
+  food_logs: Pick<FoodLog, 'id' | 'food_name' | 'calories' | 'meal_type' | 'logged_at'>[]
+  vaccine_logs: Pick<VaccineLog, 'id' | 'vaccine_name' | 'status' | 'next_due_at'>[]
+}

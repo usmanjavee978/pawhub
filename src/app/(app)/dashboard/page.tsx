@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   if (!user) redirect('/login')
 
   const queryClient = new QueryClient()
-  const supabase    = createServerClient()
+  const supabase = createServerClient()
 
   // Prefetch pets with today's food logs and upcoming vaccines
   // Zero loading spinners on mount — data is already in the cache
@@ -46,7 +46,7 @@ export default async function DashboardPage() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <DashboardClient
         userId={user.id}
-        displayName={profile?.display_name ?? profile?.username ?? 'there'}
+        displayName={(profile as any)?.display_name ?? (profile as any)?.username ?? 'there'}
       />
     </HydrationBoundary>
   )

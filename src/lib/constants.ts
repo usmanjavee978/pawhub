@@ -1,7 +1,7 @@
 // ─── App-wide constants ─────────────────────────────────────────
 
 export const APP_NAME = 'PawHub'
-export const APP_DESCRIPTION = 'Track your pet's health, food, and vaccines.'
+export const APP_DESCRIPTION = `Track your pet's health, food, and vaccines.`
 
 // Storage bucket name (Supabase Storage)
 export const STORAGE_BUCKET_PETS = 'pet-photos'

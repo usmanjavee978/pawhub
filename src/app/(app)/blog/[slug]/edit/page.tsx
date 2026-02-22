@@ -35,7 +35,8 @@ export default async function EditPostPage({ params }: { params: { slug: string 
             if (error || !data) throw error
 
             // Strict authorization check — you can only edit if you are the author
-            if (data.author_id !== user.id) {
+            const post = data as any
+            if (post.author_id !== user.id) {
                 throw new Error('Unauthorized')
             }
 

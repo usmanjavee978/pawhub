@@ -28,9 +28,10 @@ export default async function QuestionDetailPage({ params }: { params: Promise<{
     if (error || !question) notFound()
 
     // Track view count (simple implementation, not deduplicated by IP)
-    await supabase.rpc('increment_question_view_count', { q_id: question.id }).catch(() => {
+    const q = question as any
+    await (supabase as any).rpc('increment_question_view_count', { q_id: q.id }).catch(() => {
         // Fallback if the RPC does not exist
-        supabase.from('questions').update({ view_count: question.view_count + 1 }).eq('id', question.id).then()
+        (supabase.from('questions') as any).update({ view_count: q.view_count + 1 }).eq('id', q.id).then()
     })
 
     await queryClient.prefetchQuery({

@@ -29,7 +29,7 @@ export function CommunityClient() {
         }
     }
 
-    const filteredQuestions = questions.filter(q =>
+    const filteredQuestions = questions.filter((q: any) =>
         q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         q.content.toLowerCase().includes(searchQuery.toLowerCase())
     )
