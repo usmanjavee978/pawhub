@@ -20,9 +20,11 @@ export default async function NewVaccineLogPage({ params }: { params: Promise<{ 
         .select('id, name')
         .eq('id', petId)
         .eq('owner_id', user.id)
-        .single()
+        .maybeSingle()
 
     if (!pet) return notFound()
 
-    return <VaccineNewClient petId={pet.id} petName={pet.name} userId={user.id} />
+    const petObj = pet as { id: string; name: string }
+
+    return <VaccineNewClient petId={petObj.id} petName={petObj.name} userId={user.id} />
 }

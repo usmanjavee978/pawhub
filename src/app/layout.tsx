@@ -1,22 +1,7 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Lora } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 
-// ─── Fonts ─────────────────────────────────────────────────────
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-})
-
-const lora = Lora({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-// ─── Metadata ──────────────────────────────────────────────────
 export const metadata: Metadata = {
   title: {
     default: 'PawHub — Pet Care & Community',
@@ -60,11 +45,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${lora.variable}`}
     >
       <body className="font-sans" data-mood="idle">
         <Providers>
-          {/* Compositor-thread ambient background — no JS cost */}
           <div className="ambient-bg" aria-hidden="true" />
           <div className="cursor-light" aria-hidden="true" />
 

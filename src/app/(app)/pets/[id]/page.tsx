@@ -21,16 +21,20 @@ export default async function PetDetailPage({ params }: { params: Promise<{ id: 
         .from('pets')
         .select('*')
         .eq('id', petId)
-        .single()
+        .maybeSingle()
 
-    const petData = pet as any
-    if (petError || !pet || petData.owner_id !== user.id || !petData.is_active) {
+    if (petError || !pet) {
+        notFound()
+    }
+
+    const petObj = pet as { id: string; owner_id: string; is_active: boolean }
+    if (petObj.owner_id !== user.id || !petObj.is_active) {
         notFound()
     }
 
     await queryClient.prefetchQuery({
         queryKey: ['pets', petId],
-        queryFn: () => pet,
+        queryFn: () => petObj,
     })
 
     await queryClient.prefetchQuery({

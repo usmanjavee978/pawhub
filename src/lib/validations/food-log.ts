@@ -11,4 +11,4 @@ export const foodLogSchema = z.object({
     logged_at: z.string().optional(),
 })
 
-export type FoodLogFormValues = z.infer<typeof foodLogSchema>
+export type FoodLogFormValues = z.input<typeof foodLogSchema>
