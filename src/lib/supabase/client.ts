@@ -9,8 +9,7 @@ export function createBrowserClient() {
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     console.warn('Supabase keys missing. App will run in "Preview Only" mode.')
-    // Return a dummy client or handle it in the UI
-    return null as any
+    return createSupabaseBrowserClient<Database>('https://placeholder.supabase.co', 'placeholder')
   }
 
   client = createSupabaseBrowserClient<Database>(
